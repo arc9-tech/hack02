@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package arc9.user;
+
+option java_package = "tech.arc9.user";
+option java_outer_classname = "UserProto";
+
+message User {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+}
