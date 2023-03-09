@@ -2,6 +2,7 @@ package tech.arc9.gateway.configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +19,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
 
+    @Autowired private GatewayConfig config;
+
     private static final String[] AUTH_LIST = {
             "/v2/api-docs",
             "/swagger-ui.html",
@@ -25,8 +28,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        String username = System.getenv("API_DOC_USER");
-        String password = System.getenv("API_DOC_PASSWORD");
+        String username = config.getSwaggerUsername();
+        String password = config.getSwaggerPassword();
 
         auth.inMemoryAuthentication().withUser("user").password(passwordEncoder()
                         .encode("password")).roles("USER").and().withUser(username)

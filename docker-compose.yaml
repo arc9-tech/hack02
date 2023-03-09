@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  redis:
+    image: docker.io/bitnami/redis:6.2
+    restart: "unless-stopped"
+    ports:
+      - '6379:6379'
+    environment:
+      ALLOW_EMPTY_PASSWORD: 'NO'
+      REDIS_DISABLE_COMMANDS: 'FLUSHDB,FLUSHALL'
+      REDIS_PASSWORD: 'password'
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+
+  mysql5:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'arc9'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - 'mysql5_data:/var/lib/mysql'
+
+volumes:
+  redis_data:
+    driver: local
+  mysql5_data:
+    driver: local

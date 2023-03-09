@@ -8,6 +8,10 @@ import "user/user.proto";
 
 service UserService {
   rpc GetUserDetails(GetUserDetailsRequest) returns(GetUserDetailsResponse);
+  rpc CreateUser(CreateUserRequest) returns(CreateUserResponse);
+  rpc UpdateUser(UpdateUserRequest) returns(UpdateUserResponse);
+  rpc GetUserList(GetUserListRequest) returns(GetUserListResponse);
+
 }
 
 
@@ -19,4 +23,38 @@ message GetUserDetailsResponse{
   int32 response_code = 1;
   string response_message = 2;
   User user = 3;
+}
+
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+}
+
+message CreateUserResponse{
+  int32 response_code = 1;
+  string response_message = 2;
+  User user = 3;
+}
+
+message UpdateUserRequest {
+  string name = 1;
+  string email = 2;
+  string id = 3;
+}
+
+message UpdateUserResponse{
+  int32 response_code = 1;
+  string response_message = 2;
+  User user = 3;
+}
+
+message GetUserListRequest {
+  int32 offset = 1;
+  int32 limit = 2;
+}
+
+message GetUserListResponse{
+  int32 response_code = 1;
+  string response_message = 2;
+  repeated User users = 3;
 }
