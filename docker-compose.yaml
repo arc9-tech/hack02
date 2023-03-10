@@ -28,10 +28,12 @@ services:
       - 'mysql5_data:/var/lib/mysql'
   s3:
     image: minio/minio:latest
-    restart: "unless-stopped"
+    command: server /data
+    #    restart: "unless-stopped"
     environment:
-      MINIO_ACCESS_KEY: accesskey
-      MINIO_SECRET_KEY: secretkey
+      MINIO_ROOT_USER: user
+      MINIO_ROOT_PASSWORD: password
+#      MINIO_BROWSER_REDIRECT_URL: http://localhost:9000
     ports:
       - '9000:9000'
     volumes:

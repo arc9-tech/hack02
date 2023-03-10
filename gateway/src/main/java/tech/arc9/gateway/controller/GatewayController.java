@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tech.arc9.gateway.client.MediaServiceClient;
 import tech.arc9.gateway.client.UserServiceClient;
 import tech.arc9.gateway.model.ErrorResponse;
+import tech.arc9.gateway.model.SignedUrl;
 import tech.arc9.gateway.model.User;
 import tech.arc9.gateway.model.UserCreateModel;
 import tech.arc9.user.UserProto;
@@ -29,6 +31,7 @@ import javax.validation.Valid;
 public class GatewayController {
     Logger log = LoggerFactory.getLogger(GatewayController.class);
     @Autowired private UserServiceClient userServiceClient;
+    @Autowired private MediaServiceClient mediaServiceClient;
 
 
     @GetMapping(value = "/hello", produces = "application/json")
@@ -47,10 +50,6 @@ public class GatewayController {
         return json;
     }
 
-    //POST user --> create user {name, email }
-    //PATCH user --> update name
-    //GET user --> user list
-    //GET user/{userId} --> user details
 
     @GetMapping(value = "/user/{userId}", produces = "application/json")
     @ApiResponses(value = {
@@ -147,6 +146,33 @@ public class GatewayController {
                 )
         );
     }
+
+
+
+    @GetMapping(value = "/user/{userId}/dp-download-url", produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, response = SignedUrl.class, message = "User found"),
+    })
+    public ResponseEntity getUserDpDownloadUrl(HttpServletRequest request,
+                                         @RequestHeader("Authorization") String authorization,
+                                         @PathVariable String userId) {
+        log.info("Request recived for user details {}", userId);
+        return ResponseEntity.ok(mediaServiceClient.getDpDownloadUrl(userId));
+    }
+
+    @GetMapping(value = "/user/{userId}/dp-upload-url", produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, response = SignedUrl.class, message = "User found"),
+    })
+    public ResponseEntity getUserDpUploadUrl(HttpServletRequest request,
+                                               @RequestHeader("Authorization") String authorization,
+                                               @PathVariable String userId) {
+        log.info("Request recived for user details {}", userId);
+        return ResponseEntity.ok(mediaServiceClient.getDpUploadUrl(userId));
+    }
+
+
+
     //GET user/{userId}/avatar --> returns signed url
     //grpc 1
     //grpc 2

@@ -25,7 +25,6 @@ public class UserServiceClient {
                         config.getUserServicePort()
                 ).usePlaintext().build()
         );
-//                .withDeadlineAfter(5, TimeUnit.SECONDS);
     }
 
     public UserServiceProto.GetUserDetailsResponse getUserDetails(

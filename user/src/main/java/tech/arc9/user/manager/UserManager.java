@@ -13,17 +13,10 @@ import tech.arc9.user.db.mysql.tool.OffsetBasedPageRequest;
 import tech.arc9.user.db.redis.dao.RedisDao;
 import tech.arc9.user.model.User;
 
-import javax.annotation.PostConstruct;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import javax.sql.DataSource;
-import javax.transaction.Transactional;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
 import java.time.Instant;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 

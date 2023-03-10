@@ -5,14 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd8f2b81-ade3-47c5-9ad2-83a619b5218e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/config/RedissonConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/db/redis/dao/RedisDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/environment/media.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/client/MediaServiceClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/model/SignedUrl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/run.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/tech/arc9/mediaservice/config/MediaConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/tech/arc9/mediaservice/config/S3Config.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/tech/arc9/mediaservice/manager/MediaManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media-service/src/main/java/tech/arc9/mediaservice/server/MediaServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proto/src/main/proto/media/media_service.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/environment/user.env" beforeDir="false" afterPath="$PROJECT_DIR$/environment/user.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/user/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/config/UserConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/config/UserConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/environment/gateway.env" beforeDir="false" afterPath="$PROJECT_DIR$/environment/gateway.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/client/UserServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/client/UserServiceClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/configuration/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/configuration/GatewayConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/controller/GatewayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/controller/GatewayController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/manager/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/manager/UserManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,40 +80,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;1.8&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/tariq/code/hackathon/hack02/environment/user.env&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;a6980ed0f95c29852765de5d9e91a229&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "1.8",
+    "last_opened_file_path": "/home/tariq/code/hackathon/hack02/environment/media.env",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "spring.configuration.checksum": "32b749c3fa6265c161204d9f20a4948c",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/media-service" />
       <recent name="$PROJECT_DIR$/user" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/proto/src/main/proto" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="tech.arc9.mediaservice.server" />
+      <recent name="tech.arc9.mediaservice.config" />
+    </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.UserApplication">
+  <component name="RunManager" selected="Spring Boot.MediaServiceApplication">
     <configuration name="GatewayApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="gateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="tech.arc9.gateway.GatewayApplication" />
@@ -115,6 +129,24 @@
     <configuration name="GatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="gateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="tech.arch9.gateway.GatewayApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MediaServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="media-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="tech.arc9.mediaservice.MediaServiceApplication" />
+      <extension name="net.ashald.envfile">
+        <option name="IS_ENABLED" value="true" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+          <ENTRY IS_ENABLED="true" PARSER="env" IS_EXECUTABLE="false" PATH="environment/media.env" />
+        </ENTRIES>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -138,6 +170,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Spring Boot.MediaServiceApplication" />
       <item itemvalue="Spring Boot.GatewayApplication" />
       <item itemvalue="Spring Boot.GatewayApplication (1)" />
       <item itemvalue="Spring Boot.UserApplication" />
@@ -163,7 +196,8 @@
       <workItem from="1678394187297" duration="8713000" />
       <workItem from="1678431417442" duration="6641000" />
       <workItem from="1678445447722" duration="826000" />
-      <workItem from="1678462240798" duration="16990000" />
+      <workItem from="1678462240798" duration="26111000" />
+      <workItem from="1678490900790" duration="1031000" />
     </task>
     <servers />
   </component>
@@ -174,6 +208,7 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/gateway" />
       <path value="$PROJECT_DIR$/user" />
+      <path value="$PROJECT_DIR$/media-service" />
     </ignored-roots>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">

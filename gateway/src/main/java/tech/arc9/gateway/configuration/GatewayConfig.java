@@ -15,6 +15,10 @@ public class GatewayConfig {
     private String userServiceHost;
     private int userServicePort;
 
+
+    private String mediaServiceHost;
+    private int mediaServicePort;
+
     @PostConstruct
     private void initialize() {
         swaggerUsername = System.getenv("API_DOC_USER");
@@ -47,6 +51,24 @@ public class GatewayConfig {
             System.exit(-1);
         }
 
+        mediaServiceHost = System.getenv("MEDIA_SERVICE_HOST");
+        if(mediaServiceHost == null || mediaServiceHost.isEmpty()) {
+            log.error("MEDIA_SERVICE_HOST not set");
+            System.exit(-1);
+        }
+
+        String mediaServicePortStr = System.getenv("MEDIA_SERVICE_PORT");
+        if(mediaServicePortStr == null || mediaServicePortStr.isEmpty()) {
+            log.error("MEDIA_SERVICE_PORT not set");
+            System.exit(-1);
+        }
+        try {
+            mediaServicePort = Integer.parseInt(mediaServicePortStr);
+        } catch (Exception ex) {
+            log.error("MEDIA_SERVICE_PORT is not a integer");
+            System.exit(-1);
+        }
+
     }
 
     public String getSwaggerUsername() {
@@ -63,5 +85,13 @@ public class GatewayConfig {
 
     public int getUserServicePort() {
         return userServicePort;
+    }
+
+    public String getMediaServiceHost() {
+        return mediaServiceHost;
+    }
+
+    public int getMediaServicePort() {
+        return mediaServicePort;
     }
 }
