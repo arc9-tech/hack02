@@ -28,18 +28,21 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase {
     @Override
     public void createUser(UserServiceProto.CreateUserRequest request,
                            StreamObserver<UserServiceProto.CreateUserResponse> responseObserver) {
-        super.createUser(request, responseObserver);
+        responseObserver.onNext(userManager.createUser(request));
+        responseObserver.onCompleted();
     }
 
     @Override
     public void updateUser(UserServiceProto.UpdateUserRequest request,
                            StreamObserver<UserServiceProto.UpdateUserResponse> responseObserver) {
-        super.updateUser(request, responseObserver);
+        responseObserver.onNext(userManager.updateUser(request));
+        responseObserver.onCompleted();
     }
 
     @Override
     public void getUserList(UserServiceProto.GetUserListRequest request,
                             StreamObserver<UserServiceProto.GetUserListResponse> responseObserver) {
-        super.getUserList(request, responseObserver);
+        responseObserver.onNext(userManager.getUserList(request));
+        responseObserver.onCompleted();
     }
 }

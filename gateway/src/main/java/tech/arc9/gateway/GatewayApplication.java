@@ -9,8 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GatewayApplication {
     static Logger log = LoggerFactory.getLogger(GatewayApplication.class);
     public static void main(String[] args) {
-//        String sslKeystorePassword = System.getenv("SSL_KEY_STORE_PASSWORD");
-//        System.setProperty("server.ssl.key-store-password", sslKeystorePassword);
         SpringApplication.run(GatewayApplication.class, args);
     }
 

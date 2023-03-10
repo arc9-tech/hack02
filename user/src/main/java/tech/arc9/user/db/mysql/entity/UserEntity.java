@@ -17,7 +17,6 @@ public class UserEntity implements Serializable {
     public String password;
     public String name;
     public String address;
-    @Version
     public Integer version;
     public Instant createTime;
     public Instant lastUpdateTime;

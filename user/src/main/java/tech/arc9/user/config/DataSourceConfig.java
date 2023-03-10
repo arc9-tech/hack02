@@ -1,5 +1,7 @@
 package tech.arc9.user.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,16 +9,17 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import tech.arc9.user.server.UserServiceImpl;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 
 @Configuration
-@EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "tech.arc9.user.db.mysql.repository")
+//@EnableTransactionManagement
+//@EnableJpaRepositories(basePackages = "tech.arc9.user.db.mysql.repository")
 public class DataSourceConfig {
+
+    Logger log = LoggerFactory.getLogger(DataSourceConfig.class);
     private static final String MYSQL_HOST = "MYSQL_HOST";
     private static final String MYSQL_PORT = "MYSQL_PORT";
     private static final String MYSQL_DATABASE = "MYSQL_DATABASE";
@@ -34,11 +37,13 @@ public class DataSourceConfig {
         String username = env.getRequiredProperty(MYSQL_USERNAME);
         String password = env.getRequiredProperty(MYSQL_PASSWORD);
 
+//        log.info("sql {} {} {} {} {}", host, port, database, username, password);
+
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.url("jdbc:mysql://" + host + ":" + port + "/" + database + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true");
+//        dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
         dataSourceBuilder.username(username);
         dataSourceBuilder.password(password);
-        DataSource dataSource = dataSourceBuilder.build();
-        return new TransactionAwareDataSourceProxy(dataSource);
+        return dataSourceBuilder.build();
     }
 }
