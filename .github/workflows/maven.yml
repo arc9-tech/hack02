@@ -22,3 +22,10 @@ jobs:
     # Runs a single command using the runners shell
     - name: Run a one-line script
       run: ls
+
+    # Runs a set of commands using the runners shell
+    - name: Run maven script
+      uses: ZhilinS/action-maven-cli/jdk8@master
+      id: test
+      with:
+        lifecycle: 'clean package test'
