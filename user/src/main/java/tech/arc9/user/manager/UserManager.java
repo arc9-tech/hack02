@@ -10,6 +10,8 @@ import tech.arc9.user.UserServiceProto;
 import tech.arc9.user.db.mysql.entity.UserEntity;
 import tech.arc9.user.db.mysql.repository.UserRepository;
 import tech.arc9.user.db.mysql.tool.OffsetBasedPageRequest;
+import tech.arc9.user.db.redis.dao.RedisDao;
+import tech.arc9.user.model.User;
 
 import javax.annotation.PostConstruct;
 import javax.mail.internet.AddressException;
@@ -23,13 +25,17 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class UserManager {
 
 
-//    private private static final int  = 582; UserRepository userRepository;
+    Logger log = LoggerFactory.getLogger(UserManager.class);
     private final UserRepository userRepository;
+    @Autowired private RedisDao redisDao;
+    private static final String REDIS_KEY_PREFIX_USER = "USER:";
+
 
     public UserManager(
             UserRepository userRepository
@@ -38,19 +44,7 @@ public class UserManager {
         userRepository.findById("");
     }
 
-    Logger log = LoggerFactory.getLogger(UserManager.class);
 
-
-
-
-//    @PostConstruct
-//    private void test() {
-//        log.info("Hello i am ready");
-//        UserEntity entity = userRepository.findById("ghujgyh").orElse(null);
-//        log.info("found {}", entity);
-//        entity = userRepository.findById("bf2c3dd2-e4ee-4146-a2ed-253edf86fb6b").orElse(null);
-//        log.info("found {}", entity);
-//    }
 
     public UserServiceProto.GetUserDetailsResponse
     getUserDetails(UserServiceProto.GetUserDetailsRequest req) {
@@ -64,24 +58,33 @@ public class UserManager {
                     .setResponseMessage("Empty id not allowed").build();
         }
         //TODO: get from redis cache
-        UserEntity user = null;
+        User model = null;
         try {
-            user = userRepository.findById(req.getUserId()).orElse(null);
+
+            model = (User)redisDao.get(REDIS_KEY_PREFIX_USER + req.getUserId());
+            if(model == null) {
+                UserEntity entity = userRepository.findById(req.getUserId()).orElse(null);
+                if(entity != null) {
+                    model = new User(entity);
+                    log.info("saving to redis cache");
+                    redisDao.set(REDIS_KEY_PREFIX_USER+req.getUserId(), model);
+                }
+            } else {
+                log.info("Retrived from cache");
+            }
+
         } catch (Exception e) {
             log.error("database error", e);
         }
-        if(user == null) {
+        if(model == null) {
             return UserServiceProto.GetUserDetailsResponse.newBuilder()
                     .setResponseCode(404)
                     .setResponseMessage("User not found").build();
         }
-        UserProto.User.Builder userBuilder = UserProto.User.newBuilder().setId(req.getUserId())
-                .setEmail(user.email)
-                .setName(user.name);
         UserServiceProto.GetUserDetailsResponse.Builder responseBuilder = UserServiceProto.GetUserDetailsResponse.newBuilder()
                 .setResponseCode(200)
                 .setResponseMessage("User found")
-                .setUser(userBuilder.build());
+                .setUser(model.toProto());
         return responseBuilder.build();
 
     }
@@ -144,16 +147,17 @@ public class UserManager {
         entity.lastUpdateTime = Instant.now();
         entity.version = 0;
         userRepository.save(entity);
-        //Put in cache
+        User model = new User(entity);
+        CompletableFuture.runAsync(() -> {
+            log.info("Saving to cache...");
+            redisDao.set(REDIS_KEY_PREFIX_USER+entity.id, model);
+            log.info("Saved to cache.");
+        });
+        log.info("Returing asynchrinusly");
         return UserServiceProto.CreateUserResponse.newBuilder()
                 .setResponseCode(200)
                 .setResponseMessage("User Created")
-                .setUser(
-                        UserProto.User.newBuilder()
-                                .setId(entity.id)
-                                .setName(entity.name)
-                                .setEmail(entity.email)
-                ).build();
+                .setUser(model.toProto()).build();
 
     }
 
@@ -163,6 +167,7 @@ public class UserManager {
         String email = req.getEmail();
         UserEntity entity = null;
         try {
+            //not using cache for keeping track for update
             entity = userRepository.findById(req.getId()).orElse(null);
         } catch (Exception e) {
             //pass
@@ -182,6 +187,12 @@ public class UserManager {
 
         try {
             userRepository.save(entity);
+            User model = new User(entity);
+            CompletableFuture.runAsync(() -> {
+                log.info("Saving to cache...");
+                redisDao.set(REDIS_KEY_PREFIX_USER+model.getId(), model);
+                log.info("Saved to cache.");
+            });
         } catch (Exception e) {
             log.error("Error while updating user", e);
             return UserServiceProto.UpdateUserResponse.newBuilder()

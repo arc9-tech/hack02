@@ -7,9 +7,8 @@ services:
     ports:
       - '6379:6379'
     environment:
-      ALLOW_EMPTY_PASSWORD: 'NO'
+      ALLOW_EMPTY_PASSWORD: 'YES'
       REDIS_DISABLE_COMMANDS: 'FLUSHDB,FLUSHALL'
-      REDIS_PASSWORD: 'password'
     volumes:
       - 'redis_data:/bitnami/redis/data'
 
@@ -27,9 +26,20 @@ services:
       - '3306'
     volumes:
       - 'mysql5_data:/var/lib/mysql'
-
+  s3:
+    image: minio/minio:latest
+    restart: "unless-stopped"
+    environment:
+      MINIO_ACCESS_KEY: accesskey
+      MINIO_SECRET_KEY: secretkey
+    ports:
+      - '9000:9000'
+    volumes:
+      - 's3_data:/data'
 volumes:
   redis_data:
     driver: local
   mysql5_data:
+    driver: local
+  s3_data:
     driver: local
