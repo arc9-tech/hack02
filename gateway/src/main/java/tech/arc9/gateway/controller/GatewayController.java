@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.arc9.gateway.client.MediaServiceClient;
 import tech.arc9.gateway.client.UserServiceClient;
+import tech.arc9.gateway.configuration.GatewayConfig;
 import tech.arc9.gateway.model.ErrorResponse;
 import tech.arc9.gateway.model.SignedUrl;
 import tech.arc9.gateway.model.User;
@@ -21,6 +22,7 @@ import tech.arc9.gateway.model.UserCreateModel;
 import tech.arc9.user.UserProto;
 import tech.arc9.user.UserServiceProto;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -32,6 +34,15 @@ public class GatewayController {
     Logger log = LoggerFactory.getLogger(GatewayController.class);
     @Autowired private UserServiceClient userServiceClient;
     @Autowired private MediaServiceClient mediaServiceClient;
+    @Autowired private GatewayConfig config;
+
+    private String apiKey;
+
+    @PostConstruct
+    private void init() {
+        this.apiKey = config.getApiKey();
+//        log.info("API KEY: {}", apiKey);
+    }
 
 
     @GetMapping(value = "/hello", produces = "application/json")
@@ -59,6 +70,9 @@ public class GatewayController {
     public ResponseEntity getUserDetails(HttpServletRequest request,
                                          @RequestHeader("Authorization") String authorization,
                                          @PathVariable String userId) {
+        if(!verifyToken(authorization)) {
+            return unauthorizedResponse();
+        }
         log.info("Request recived for user details {}", userId);
 
         UserServiceProto.GetUserDetailsResponse response = userServiceClient.getUserDetails(userId);
@@ -77,13 +91,16 @@ public class GatewayController {
 
     @GetMapping(value = "/user", produces = "application/json")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, response = User[].class, message = "User found"),
+            @ApiResponse(code = 200, response = User[].class, message = "User list found"),
             @ApiResponse(code = 404, response = ErrorResponse.class, message = "Not found")
     })
     public ResponseEntity getUserList(HttpServletRequest request,
                                          @RequestHeader("Authorization") String authorization,
                                         @RequestParam(value="offset", defaultValue="0") int offset,
                                         @RequestParam(value="limit", defaultValue="10") int limit) {
+        if(!verifyToken(authorization)) {
+            return unauthorizedResponse();
+        }
         UserServiceProto.GetUserListResponse response = userServiceClient.getUserList(limit, offset);
 
         if(response.getResponseCode() != HttpStatus.OK.value()) {
@@ -103,7 +120,7 @@ public class GatewayController {
 
     @PostMapping(value = "/user", produces = "application/json")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, response = User.class, message = "User found"),
+            @ApiResponse(code = 200, response = User.class, message = "User Created"),
             @ApiResponse(code = 400, response = ErrorResponse.class, message = "Invalid request")
     })
     public ResponseEntity createUser(
@@ -111,6 +128,9 @@ public class GatewayController {
             @RequestHeader("Authorization") String authorization,
             @Valid @RequestBody UserCreateModel userCreateModel
             ) {
+        if(!verifyToken(authorization)) {
+            return unauthorizedResponse();
+        }
         UserServiceProto.CreateUserResponse response =
         userServiceClient.createUser(userCreateModel.getName(), userCreateModel.getEmail());
         if(response.getResponseCode() == HttpStatus.OK.value()) {
@@ -125,7 +145,7 @@ public class GatewayController {
     }
     @PatchMapping(value = "/user/{userId}", produces = "application/json")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, response = User.class, message = "User found"),
+            @ApiResponse(code = 200, response = User.class, message = "User Updated"),
             @ApiResponse(code = 400, response = ErrorResponse.class, message = "Invalid request")
     })
     public ResponseEntity updateUser(
@@ -134,6 +154,9 @@ public class GatewayController {
             @Valid @RequestBody UserCreateModel userCreateModel,
             @PathVariable String userId
     ) {
+        if(!verifyToken(authorization)) {
+            return unauthorizedResponse();
+        }
         UserServiceProto.UpdateUserResponse response =
                 userServiceClient.updateUser(userId, userCreateModel.getName(), userCreateModel.getEmail());
         if(response.getResponseCode() == HttpStatus.OK.value()) {
@@ -151,34 +174,43 @@ public class GatewayController {
 
     @GetMapping(value = "/user/{userId}/dp-download-url", produces = "application/json")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, response = SignedUrl.class, message = "User found"),
+            @ApiResponse(code = 200, response = SignedUrl.class, message = "OK"),
     })
     public ResponseEntity getUserDpDownloadUrl(HttpServletRequest request,
                                          @RequestHeader("Authorization") String authorization,
                                          @PathVariable String userId) {
+        if(!verifyToken(authorization)) {
+            return unauthorizedResponse();
+        }
         log.info("Request recived for user details {}", userId);
         return ResponseEntity.ok(mediaServiceClient.getDpDownloadUrl(userId));
     }
 
     @GetMapping(value = "/user/{userId}/dp-upload-url", produces = "application/json")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, response = SignedUrl.class, message = "User found"),
+            @ApiResponse(code = 200, response = SignedUrl.class, message = "OK"),
     })
     public ResponseEntity getUserDpUploadUrl(HttpServletRequest request,
                                                @RequestHeader("Authorization") String authorization,
                                                @PathVariable String userId) {
+        if(!verifyToken(authorization)) {
+            return unauthorizedResponse();
+        }
         log.info("Request recived for user details {}", userId);
         return ResponseEntity.ok(mediaServiceClient.getDpUploadUrl(userId));
     }
 
+    private ResponseEntity unauthorizedResponse() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                new ErrorResponse(
+                        HttpStatus.UNAUTHORIZED,
+                        "Invalid Api key"
+                )
+        );
+    }
 
-
-    //GET user/{userId}/avatar --> returns signed url
-    //grpc 1
-    //grpc 2
-    //redis
-    //docker all 3 app
-    //docker mysql
-    //docker redis
+    private boolean verifyToken(String token) {
+        return token.equals(this.apiKey);
+    }
     //elastic stack , apm, elastic,kibana
 }

@@ -19,6 +19,8 @@ public class GatewayConfig {
     private String mediaServiceHost;
     private int mediaServicePort;
 
+    private String apiKey;
+
     @PostConstruct
     private void initialize() {
         swaggerUsername = System.getenv("API_DOC_USER");
@@ -69,6 +71,12 @@ public class GatewayConfig {
             System.exit(-1);
         }
 
+        apiKey = System.getenv("API_KEY");
+        if(apiKey == null || apiKey.isEmpty()) {
+            log.error("API_KEY not set");
+            System.exit(-1);
+        }
+
     }
 
     public String getSwaggerUsername() {
@@ -93,5 +101,9 @@ public class GatewayConfig {
 
     public int getMediaServicePort() {
         return mediaServicePort;
+    }
+
+    public String getApiKey() {
+        return apiKey;
     }
 }
