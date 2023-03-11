@@ -64,4 +64,4 @@ jobs:
         context: .
         file: gateway/Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
-        tags: babeswithbothacks.jfrog.io/docker/gateway-service:{{ env.GIT_TAG_NAME }}
+        tags: babeswithbothacks.jfrog.io/docker/gateway-service:${{ steps.vars.outputs.tag }}
