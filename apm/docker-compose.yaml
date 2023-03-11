@@ -1,0 +1,42 @@
+version: '3.7'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ELASTIC_USERNAME=user"
+      - "ELASTIC_PASSWORD=password"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.15.0
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    environment:
+      - "ELASTICSEARCH_USERNAME=user"
+      - "ELASTICSEARCH_PASSWORD=password"
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.15.0
+    ports:
+      - 8200:8200
+    depends_on:
+      - elasticsearch
+    command: ["apm-server", "-e", "--strict.perms=false"]
+    environment:
+      - "ELASTICSEARCH_HOSTS=http://elasticsearch:9200"
+      - "ELASTICSEARCH_USERNAME=user"
+      - "ELASTICSEARCH_PASSWORD=password"
+      - "APM_SERVER_SECRET_TOKEN=secret"
+
+volumes:
+  esdata:

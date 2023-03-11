@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 
 // const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -33,18 +33,41 @@ function reducer(state, action) {
 
 export const CreateUserForm = ({ setTriggerRefresh }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [image, setImage] = useState(null);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Step 1: POST user API without image
     try {
       const response = await fetch(`${API_URL}/user`, {
         method: "POST",
-        headers: { 
-          "Content-Type": "application/json" ,
-          Authorization: `ApiKey ${API_KEY}`
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `ApiKey ${API_KEY}`,
         },
         body: JSON.stringify(state),
       });
+      const { id } = await response.json();
+
+      // Step 2: GET dp-upload-url API
+      const uploadUrlResponse = await fetch(`${API_URL}/user/${id}/dp-upload-url`, {
+        headers: {
+          Authorization: `ApiKey ${API_KEY}`,
+        },
+      });
+      const { url } = await uploadUrlResponse.json();
+
+      // Step 3: Upload image to URL
+      if (image) {
+        // const formData = new FormData();
+        // formData.append("file", image);
+        await fetch(url, {
+          method: "PUT",
+          body: image,
+        });
+      }
 
       console.log(response.data);
       console.log(state);
@@ -145,6 +168,20 @@ export const CreateUserForm = ({ setTriggerRefresh }) => {
             className="w-full px-2 py-1 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
           />
         </div>
+        <div className="mb-2">
+          <label htmlFor="image" className="block mb-1 font-bold text-gray-700">
+            Image:
+          </label>
+          <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onChange={(event) => setImage(event.target.files[0])}
+              className="w-full px-2 py-1 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+          />
+        </div>
+
         <div className="flex justify-end">
           <button
             type="submit"
