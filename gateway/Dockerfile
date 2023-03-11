@@ -8,4 +8,4 @@ COPY elastic-apm-agent-1.22.0.jar /elastic-apm-agent-1.22.0.jar
 EXPOSE 8080
 
 # run application with this command line
-CMD ["-Xmx1024m", "-javaagent:../elastic-apm-agent-1.22.0.jar", "-Delastic.apm.service_name=gateway", "-Delastic.apm.server_urls=${APM_SERVER_URL}", "-Delastic.apm.secret_token=${APM_SERVER_SECRET}", "-Delastic.apm.application_packages=tech.arc9.gateway", "-jar", "-Dspring.profiles.active=default", "/gateway.jar"]
+CMD ["-Xmx1024m", "-javaagent:/elastic-apm-agent-1.22.0.jar", "-Delastic.apm.service_name=gateway", "-Delastic.apm.server_urls=${APM_SERVER_URL}", "-Delastic.apm.secret_token=${APM_SERVER_SECRET}", "-Delastic.apm.application_packages=tech.arc9.gateway", "-jar", "-Dspring.profiles.active=default", "/gateway.jar"]
