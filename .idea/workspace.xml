@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bd8f2b81-ade3-47c5-9ad2-83a619b5218e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/environment/media.env" beforeDir="false" afterPath="$PROJECT_DIR$/environment/media.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media-service/src/main/java/tech/arc9/mediaservice/config/S3Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/media-service/src/main/java/tech/arc9/mediaservice/config/S3Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,6 +183,7 @@
       <workItem from="1678490900790" duration="11264000" />
       <workItem from="1678519680775" duration="4642000" />
       <workItem from="1678524899360" duration="139000" />
+      <workItem from="1678528156915" duration="21000" />
     </task>
     <servers />
   </component>
