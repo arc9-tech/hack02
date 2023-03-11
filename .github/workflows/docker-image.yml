@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" , "dev", "devops"]
   pull_request:
     branches: [ "main" ]
 
@@ -13,6 +13,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image for gateway service
-      run: |
-        cd gateway
-        docker build . --file Dockerfile --tag gateway-service:$(date +%s)
+      working-directory: ./gateway
+      run: docker build . --file Dockerfile --tag gateway-service:$(date +%s)
