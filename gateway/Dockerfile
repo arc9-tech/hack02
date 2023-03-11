@@ -2,8 +2,8 @@
 FROM gcr.io/distroless/java:8
 
 # copy jar into image
-COPY target/gateway-0.0.1-SNAPSHOT-spring-boot.jar /gateway.jar
-COPY ../elastic-apm-agent-1.22.0.jar /elastic-apm-agent-1.22.0.jar
+COPY gateway/target/gateway-0.0.1-SNAPSHOT-spring-boot.jar /gateway.jar
+COPY elastic-apm-agent-1.22.0.jar /elastic-apm-agent-1.22.0.jar
 
 EXPOSE 8080
 
