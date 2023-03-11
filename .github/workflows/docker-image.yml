@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*.*.*'
 
+env:
+  IMAGE_TAG: ${{ steps.vars.outputs.tag }}
+
 jobs:
   build:
     runs-on: self-hosted
@@ -60,4 +63,4 @@ jobs:
         context: .
         file: gateway/Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
-        tags: "babeswithbothacks.jfrog.io/docker/gateway-service:${{ steps.vars.outputs.tag }}"
+        tags: "babeswithbothacks.jfrog.io/docker/gateway-service:$IMAGE_TAG"
