@@ -13,11 +13,10 @@ public class UserEntity implements Serializable {
     @Id
     public String id;
     public String email;
-    public String username;
-    public String password;
-    public String name;
-    public String address;
-    public Integer version;
+    public String firstName;
+    public String lastName;
+    public String gender;
+    public String bio;
     public Instant createTime;
     public Instant lastUpdateTime;
 

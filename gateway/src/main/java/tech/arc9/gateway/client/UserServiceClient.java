@@ -5,6 +5,7 @@ import io.grpc.ManagedChannelBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tech.arc9.gateway.configuration.GatewayConfig;
+import tech.arc9.user.UserProto;
 import tech.arc9.user.UserServiceGrpc;
 import tech.arc9.user.UserServiceProto;
 
@@ -35,20 +36,20 @@ public class UserServiceClient {
         );
     }
 
-    public UserServiceProto.CreateUserResponse createUser(String name, String email) {
+    public UserServiceProto.CreateUserResponse createUser(UserProto.User user) {
         return userServiceBlockingStub.createUser(
-                UserServiceProto.CreateUserRequest.newBuilder().setEmail(email == null ?"":email)
-                        .setName(name == null ? "":name).build()
+                UserServiceProto.CreateUserRequest.newBuilder()
+                        .setEmail(user.getEmail())
+                        .setFirstName(user.getFirstName())
+                        .setLastName(user.getLastName())
+                        .setGender(user.getGender())
+                        .setBio(user.getBio())
+                        .build()
         );
     }
 
-    public UserServiceProto.UpdateUserResponse updateUser(String id, String name, String email) {
-        return userServiceBlockingStub.updateUser(
-                UserServiceProto.UpdateUserRequest.newBuilder()
-                        .setId(id == null ? "" : id)
-                        .setEmail(email == null ?"":email)
-                        .setName(name == null ? "":name).build()
-        );
+    public UserServiceProto.UpdateUserResponse updateUser(UserProto.User user) {
+        return userServiceBlockingStub.updateUser(user);
     }
 
     public UserServiceProto.GetUserListResponse getUserList(int limit, int offset) {
