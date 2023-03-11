@@ -6,7 +6,7 @@ import requests as requests
 if __name__ == '__main__':
 
     dummy_header = {
-        'Authorization' : 'Something'
+        'Authorization' : 'ApiKey 6L4YD88MOI5GIII'
     }
     # API endpoint URLs
     dp_upload_url = "http://localhost:8080/user/tariq/dp-upload-url"

@@ -30,7 +30,7 @@ public class S3Config {
         String accessKey = env.getRequiredProperty(config.getS3AccessKeyEnvKey());
         String secretKey = env.getRequiredProperty(config.getS3SecretKeyEnvKey());
         String bucketName = env.getRequiredProperty(config.getS3bucketEnvKey());
-        log.info("S3Config endpoint {} region {} accessKey {} secretKey {} bucketName {}", endpointUrl, region, accessKey, secretKey, region);
+        log.info("S3Config endpoint {} region {} accessKey {} secretKey {} bucketName {}", endpointUrl, region, accessKey, secretKey, bucketName);
 
         log.info("s3Config url {}", endpointUrl);
         AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
