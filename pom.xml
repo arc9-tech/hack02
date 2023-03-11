@@ -9,6 +9,8 @@
   <url>http://maven.apache.org</url>
   <modules>
     <module>proto</module>
+    <module>user</module>
+    <module>media-service</module>
     <module>gateway</module>
   </modules>
 
