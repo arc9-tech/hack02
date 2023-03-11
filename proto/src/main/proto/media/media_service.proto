@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package arc9.mediaservice;
+
+option java_package = "tech.arc9.mediaservice";
+option java_outer_classname = "MediaServiceProto";
+
+service MediaService {
+  rpc GetDpUploadUrl(Request) returns(Response);
+  rpc GetDpDownloadUrl(Request) returns(Response);
+}
+
+message Request {
+  string id = 1;
+}
+message Response {
+  string sas_url = 1;
+  int64 expired_at = 2;
+}

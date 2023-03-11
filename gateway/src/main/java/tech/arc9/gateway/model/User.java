@@ -1,5 +1,7 @@
 package tech.arc9.gateway.model;
 
+import tech.arc9.user.UserProto;
+
 public class User {
     private String name;
     private String email;
@@ -9,6 +11,12 @@ public class User {
         this.name = name;
         this.email = email;
         this.id = id;
+    }
+
+    public User(UserProto.User proto) {
+        this.email = proto.getEmail();
+        this.id = proto.getId();
+        this.name = proto.getName();
     }
 
     public String getName() {
