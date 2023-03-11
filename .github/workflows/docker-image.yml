@@ -2,9 +2,8 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" , "dev", "devops"]
-  # pull_request:
-  #   branches: [ "main" ]
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -61,4 +60,4 @@ jobs:
         context: .
         file: gateway/Dockerfile
         push: ${{ github.event_name != 'pull_request' }}
-        tags: babeswithbothacks.jfrog.io/docker/gateway-service:0.0.2
+        tags: babeswithbothacks.jfrog.io/docker/gateway-service:${{ steps.vars.outputs.tag }}
