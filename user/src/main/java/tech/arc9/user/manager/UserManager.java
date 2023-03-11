@@ -42,9 +42,6 @@ public class UserManager {
     public UserServiceProto.GetUserDetailsResponse
     getUserDetails(UserServiceProto.GetUserDetailsRequest req) {
 
-//        log.info("Request recieved {}", req);
-
-
         if(req.getUserId().isEmpty()) {
             return UserServiceProto.GetUserDetailsResponse.newBuilder()
                     .setResponseCode(400)
@@ -84,6 +81,8 @@ public class UserManager {
 
 
     public UserServiceProto.GetUserListResponse getUserList(UserServiceProto.GetUserListRequest req) {
+
+        log.info("Request recieved getUserList {}", req);
         int limit = req.getLimit();
         int offset = req.getOffset();
         if(limit <= 0 || offset < 0) {
@@ -93,14 +92,19 @@ public class UserManager {
         }
 
         List<UserEntity> userEntityList = userRepository.findAll(
-                OffsetBasedPageRequest.of(offset, limit, Sort.by(Sort.Direction.ASC, "name"))
+                OffsetBasedPageRequest.of(offset, limit, Sort.by(Sort.Direction.ASC, "firstName", "lastName"))
         ).toList();
 
         UserServiceProto.GetUserListResponse.Builder responseBuilder = UserServiceProto.GetUserListResponse.newBuilder();
         for(UserEntity entity: userEntityList) {
-            responseBuilder.addUsers(UserProto.User.newBuilder().setEmail(entity.email)
-                    .setName(entity.name)
-                    .setId(entity.id).build());
+            responseBuilder.addUsers(UserProto.User.newBuilder()
+                    .setId(entity.id)
+                    .setEmail(entity.email)
+                    .setFirstName(entity.firstName == null ? "" : entity.firstName)
+                    .setLastName(entity.lastName == null ? "" : entity.lastName)
+                    .setGender(entity.gender == null ? "" : entity.gender)
+                    .setBio(entity.bio == null ? "" : entity.bio)
+                    .build());
         }
         responseBuilder.setResponseCode(200);
         responseBuilder.setResponseMessage("User list found");
@@ -119,26 +123,40 @@ public class UserManager {
     }
     public UserServiceProto.CreateUserResponse createUser(UserServiceProto.CreateUserRequest req) {
         //validation
-        String name = req.getName();
-        String email = req.getEmail();
-        if(!isValidEmailAddress(email)) {
+//        String name = req.getName();
+//        String email = req.getEmail();
+        if(!isValidEmailAddress(req.getEmail())) {
             return UserServiceProto.CreateUserResponse.newBuilder()
                     .setResponseCode(400)
                     .setResponseMessage("invalid email").build();
         }
-        if(name.isEmpty()) {
+        if(req.getFirstName().isEmpty()) {
             return UserServiceProto.CreateUserResponse.newBuilder()
                     .setResponseCode(400)
-                    .setResponseMessage("name cant be empty").build();
+                    .setResponseMessage("FirstName cant be empty").build();
+        }
+
+        if(req.getLastName().isEmpty()) {
+            return UserServiceProto.CreateUserResponse.newBuilder()
+                    .setResponseCode(400)
+                    .setResponseMessage("LastName cant be empty").build();
+        }
+
+        if(req.getGender().isEmpty()) {
+            return UserServiceProto.CreateUserResponse.newBuilder()
+                    .setResponseCode(400)
+                    .setResponseMessage("Gender cant be empty").build();
         }
 
         UserEntity entity = new UserEntity();
         entity.id = UUID.randomUUID().toString();
-        entity.name = name;
-        entity.email = email;
+        entity.email = req.getEmail();
+        entity.firstName = req.getFirstName();
+        entity.lastName = req.getLastName();
+        entity.gender = req.getGender();
+        entity.bio = req.getBio();
         entity.createTime = Instant.now();
         entity.lastUpdateTime = Instant.now();
-        entity.version = 0;
         userRepository.save(entity);
         User model = new User(entity);
         CompletableFuture.runAsync(() -> {
@@ -154,10 +172,8 @@ public class UserManager {
 
     }
 
-    public UserServiceProto.UpdateUserResponse updateUser(UserServiceProto.UpdateUserRequest req) {
+    public UserServiceProto.UpdateUserResponse updateUser(UserProto.User req) {
         //validation
-        String name = req.getName();
-        String email = req.getEmail();
         UserEntity entity = null;
         try {
             //not using cache for keeping track for update
@@ -171,12 +187,18 @@ public class UserManager {
                     .setResponseMessage("User not found").build();
         }
 
-        if(!name.isEmpty())
-            entity.name = name;
-        if(!email.isEmpty())
-            entity.email = email;
+        if(!req.getEmail().isEmpty())
+            entity.email = req.getEmail();
+        if(!req.getFirstName().isEmpty())
+            entity.firstName = req.getFirstName();
+        if(!req.getLastName().isEmpty())
+            entity.lastName = req.getLastName();
+        if(!req.getGender().isEmpty())
+            entity.gender = req.getGender();
+        if(!req.getBio().isEmpty())
+            entity.bio = req.getBio();
+
         entity.lastUpdateTime = Instant.now();
-        entity.version++;
 
         try {
             userRepository.save(entity);
@@ -198,10 +220,7 @@ public class UserManager {
                 .setResponseCode(200)
                 .setResponseMessage("User Created")
                 .setUser(
-                        UserProto.User.newBuilder()
-                                .setId(entity.id)
-                                .setName(entity.name)
-                                .setEmail(entity.email)
+                        (new User(entity)).toProto()
                 ).build();
 
     }

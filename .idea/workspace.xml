@@ -6,9 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="bd8f2b81-ade3-47c5-9ad2-83a619b5218e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/environment/gateway.env" beforeDir="false" afterPath="$PROJECT_DIR$/environment/gateway.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/configuration/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/configuration/GatewayConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/client/UserServiceClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/client/UserServiceClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/controller/GatewayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/controller/GatewayController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/model/UserCreateModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/src/main/java/tech/arc9/gateway/model/UserCreateModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proto/src/main/proto/user/user.proto" beforeDir="false" afterPath="$PROJECT_DIR$/proto/src/main/proto/user/user.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/proto/src/main/proto/user/user_service.proto" beforeDir="false" afterPath="$PROJECT_DIR$/proto/src/main/proto/user/user_service.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/db/mysql/entity/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/db/mysql/entity/UserEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/manager/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/manager/UserManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/server/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/java/tech/arc9/user/server/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/src/main/resources/mysql/User.sql" beforeDir="false" afterPath="$PROJECT_DIR$/user/src/main/resources/mysql/User.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +112,7 @@
       <recent name="tech.arc9.mediaservice.config" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.MediaServiceApplication">
+  <component name="RunManager" selected="Spring Boot.UserApplication">
     <configuration name="GatewayApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="gateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="tech.arc9.gateway.GatewayApplication" />
@@ -183,7 +191,7 @@
       <workItem from="1678431417442" duration="6641000" />
       <workItem from="1678445447722" duration="826000" />
       <workItem from="1678462240798" duration="26111000" />
-      <workItem from="1678490900790" duration="3500000" />
+      <workItem from="1678490900790" duration="11264000" />
     </task>
     <servers />
   </component>

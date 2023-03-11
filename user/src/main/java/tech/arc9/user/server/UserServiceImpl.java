@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tech.arc9.user.UserProto;
 import tech.arc9.user.UserServiceGrpc;
 import tech.arc9.user.UserServiceProto;
 import tech.arc9.user.manager.UserManager;
@@ -33,7 +34,7 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void updateUser(UserServiceProto.UpdateUserRequest request,
+    public void updateUser(UserProto.User request,
                            StreamObserver<UserServiceProto.UpdateUserResponse> responseObserver) {
         responseObserver.onNext(userManager.updateUser(request));
         responseObserver.onCompleted();

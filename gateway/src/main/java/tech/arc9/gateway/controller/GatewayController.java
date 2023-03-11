@@ -30,6 +30,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin
 public class GatewayController {
     Logger log = LoggerFactory.getLogger(GatewayController.class);
     @Autowired private UserServiceClient userServiceClient;
@@ -132,7 +133,7 @@ public class GatewayController {
             return unauthorizedResponse();
         }
         UserServiceProto.CreateUserResponse response =
-        userServiceClient.createUser(userCreateModel.getName(), userCreateModel.getEmail());
+        userServiceClient.createUser(userCreateModel.toProto());
         if(response.getResponseCode() == HttpStatus.OK.value()) {
             return ResponseEntity.ok(new User(response.getUser()));
         }
@@ -158,7 +159,7 @@ public class GatewayController {
             return unauthorizedResponse();
         }
         UserServiceProto.UpdateUserResponse response =
-                userServiceClient.updateUser(userId, userCreateModel.getName(), userCreateModel.getEmail());
+                userServiceClient.updateUser(userCreateModel.toProto().toBuilder().setId(userId).build());
         if(response.getResponseCode() == HttpStatus.OK.value()) {
             return ResponseEntity.ok(new User(response.getUser()));
         }
