@@ -38,6 +38,8 @@ jobs:
         context: ./media-service
         push: ${{ github.event_name != 'pull_request' }}
         tags: babeswithbothacks.jfrog.io/docker/media-service:0.0.1
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
     - name: Build and push user service🐳
       if: always()
