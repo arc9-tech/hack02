@@ -33,25 +33,25 @@ jobs:
         username: ${{ secrets.JFROG_USER_WRITER }}
         password: ${{ secrets.JFROG_PASSWORD_WRITER }}
 
-    - name: Build and push media service🐳
-      if: always()
-      id: docker_build_media
-      uses: docker/build-push-action@v2
-      with:
-        context: ./media-service
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: babeswithbothacks.jfrog.io/docker/media-service:0.0.1
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+    # - name: Build and push media service🐳
+    #   if: always()
+    #   id: docker_build_media
+    #   uses: docker/build-push-action@v2
+    #   with:
+    #     context: ./media-service
+    #     push: ${{ github.event_name != 'pull_request' }}
+    #     tags: babeswithbothacks.jfrog.io/docker/media-service:0.0.2
+    #     cache-from: type=local,src=/tmp/.buildx-cache
+    #     cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
-    - name: Build and push user service🐳
-      if: always()
-      id: docker_build_user
-      uses: docker/build-push-action@v2
-      with:
-        context: ./user
-        push: ${{ github.event_name != 'pull_request' }}
-        tags: babeswithbothacks.jfrog.io/docker/user-service:0.0.1
+    # - name: Build and push user service🐳
+    #   if: always()
+    #   id: docker_build_user
+    #   uses: docker/build-push-action@v2
+    #   with:
+    #     context: ./user
+    #     push: ${{ github.event_name != 'pull_request' }}
+    #     tags: babeswithbothacks.jfrog.io/docker/user-service:0.0.2
 
     - name: Build and push gateway service 🐳
       if: always()
@@ -60,4 +60,4 @@ jobs:
       with:
         context: ./gateway
         push: ${{ github.event_name != 'pull_request' }}
-        tags: babeswithbothacks.jfrog.io/docker/gateway-service:0.0.1
+        tags: babeswithbothacks.jfrog.io/docker/gateway-service:0.0.2
